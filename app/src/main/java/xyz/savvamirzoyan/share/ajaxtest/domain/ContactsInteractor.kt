@@ -4,13 +4,13 @@ import xyz.savvamirzoyan.share.ajaxtest.data.ContactsRepository
 
 interface ContactsInteractor {
 
-    suspend fun fetchContacts(): List<ContactDomain>
+    suspend fun fetchContacts(): ContactsDomain
 
     class Base(
         private val contactsRepository: ContactsRepository,
-        private val contactsDataToDomainMapper: ContactDataToDomainMapper
+        private val contactsDataToDomainMapper: ContactsDataToDomainMapper
     ) : ContactsInteractor {
-        override suspend fun fetchContacts(): List<ContactDomain> =
-            contactsRepository.read().map { it.map(contactsDataToDomainMapper) }
+        override suspend fun fetchContacts(): ContactsDomain =
+            contactsRepository.read().map(contactsDataToDomainMapper)
     }
 }

@@ -16,11 +16,4 @@ sealed class ContactData : Abstract.Object<ContactDomain, ContactDataToDomainMap
         override fun map(mapper: ContactDataToDomainMapper): ContactDomain =
             mapper.map(id, name, surname, email, photoUrl)
     }
-
-
-    data class Fail(private val e: Exception) : ContactData() {
-        override fun map(mapper: ContactDataToDomainMapper): ContactDomain {
-            return mapper.map(e)
-        }
-    }
 }

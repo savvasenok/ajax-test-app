@@ -21,9 +21,7 @@ class ContactsListViewModel(
         viewModelScope.launch {
             val result = contactsInteractor
                 .fetchContacts()
-                .map { contactDomain ->
-                    contactDomain.map(contactsDomainToUiMapper)
-                }
+                .map(contactsDomainToUiMapper)
 
             _contactsUiFlow.emit(result)
         }
