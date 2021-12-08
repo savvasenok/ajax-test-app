@@ -18,7 +18,9 @@ import xyz.savvamirzoyan.share.ajaxtest.data.net.ContactsCloudDataSource
 import xyz.savvamirzoyan.share.ajaxtest.data.net.ContactsCloudResponseToCloudMapper
 import xyz.savvamirzoyan.share.ajaxtest.data.net.ContactsService
 import xyz.savvamirzoyan.share.ajaxtest.domain.ContactDataToDomainMapper
+import xyz.savvamirzoyan.share.ajaxtest.domain.ContactsInteractor
 import xyz.savvamirzoyan.share.ajaxtest.ui.ContactDomainToUiMapper
+import xyz.savvamirzoyan.share.ajaxtest.ui.contactslist.ContactsListViewModel
 
 class AjaxApplication : Application() {
 
@@ -29,6 +31,8 @@ class AjaxApplication : Application() {
     private val json = Json {
         ignoreUnknownKeys = true
     }
+
+    lateinit var contactsListViewModel: ContactsListViewModel
 
     @ExperimentalSerializationApi
     override fun onCreate() {
@@ -67,6 +71,12 @@ class AjaxApplication : Application() {
             contactsDbDataSource,
             contactDbToDataMapper,
             contactCloudToDataMapper
+        )
+
+        // ViewModels
+        contactsListViewModel = ContactsListViewModel(
+            ContactsInteractor.Base(contactsRepository, contactDataToDomainMapper),
+            contactDomainToUiMapper
         )
     }
 }
