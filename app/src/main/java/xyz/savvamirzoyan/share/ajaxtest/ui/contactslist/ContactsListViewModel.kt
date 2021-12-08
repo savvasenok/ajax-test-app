@@ -19,6 +19,7 @@ class ContactsListViewModel(
 
     fun fetchContacts() {
         viewModelScope.launch {
+            _contactsUiFlow.emit(listOf(ContactUi.Progress))
             val result = contactsInteractor
                 .fetchContacts()
                 .map(contactsDomainToUiMapper)

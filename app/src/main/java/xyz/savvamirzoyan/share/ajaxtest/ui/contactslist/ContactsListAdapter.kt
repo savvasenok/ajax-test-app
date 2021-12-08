@@ -3,14 +3,18 @@ package xyz.savvamirzoyan.share.ajaxtest.ui.contactslist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import xyz.savvamirzoyan.share.ajaxtest.R
+import xyz.savvamirzoyan.share.ajaxtest.core.Retry
 import xyz.savvamirzoyan.share.ajaxtest.ui.ContactUi
 
-class ContactsListAdapter : RecyclerView.Adapter<ContactsListAdapter.ContactViewHolder>() {
+class ContactsListAdapter(
+    private val retry: Retry
+) : RecyclerView.Adapter<ContactsListAdapter.ContactViewHolder>() {
 
     private companion object {
         private const val TYPE_BASE = 0
@@ -37,7 +41,7 @@ class ContactsListAdapter : RecyclerView.Adapter<ContactsListAdapter.ContactView
         return when (viewType) {
             TYPE_BASE -> ContactViewHolder.Base(R.layout.layout_contacts_list_item.makeView(parent))
             TYPE_PROGRESS -> ContactViewHolder.Progress(R.layout.layout_contacts_list_progress.makeView(parent))
-            else -> ContactViewHolder.Error(R.layout.layout_contacts_list_error.makeView(parent))
+            else -> ContactViewHolder.Fail(R.layout.layout_contacts_list_error.makeView(parent), retry)
         }
     }
 
@@ -73,8 +77,9 @@ class ContactsListAdapter : RecyclerView.Adapter<ContactsListAdapter.ContactView
             }
         }
 
-        class Error(view: View) : ContactViewHolder(view) {
+        class Fail(view: View, private val retry: Retry) : ContactViewHolder(view) {
             private val errorMessage = view.findViewById<TextView>(R.id.textView_errorReason)
+            private val retryButton = view.findViewById<Button>(R.id.button_tryAgain)
 
             override fun bind(contactUi: ContactUi) {
                 contactUi.map(object : ContactUi.ContactUiMapper {
@@ -84,6 +89,8 @@ class ContactsListAdapter : RecyclerView.Adapter<ContactsListAdapter.ContactView
 
                     override fun map(id: Int, name: String, photoUrl: String) {}
                 })
+
+                retryButton.setOnClickListener { retry.tryAgain() }
             }
         }
     }

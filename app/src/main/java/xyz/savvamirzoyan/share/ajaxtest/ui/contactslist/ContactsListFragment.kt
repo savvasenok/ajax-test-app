@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.collect
 import xyz.savvamirzoyan.share.ajaxtest.R
 import xyz.savvamirzoyan.share.ajaxtest.core.AjaxApplication
+import xyz.savvamirzoyan.share.ajaxtest.core.Retry
 
 class ContactsListFragment : Fragment() {
 
@@ -26,7 +27,11 @@ class ContactsListFragment : Fragment() {
         val viewModel = (requireActivity().application as AjaxApplication).contactsListViewModel
 
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerView_contactsList)
-        val adapter = ContactsListAdapter()
+        val adapter = ContactsListAdapter(object : Retry {
+            override fun tryAgain() {
+                viewModel.fetchContacts()
+            }
+        })
         recycler.adapter = adapter
 
         viewModel.fetchContacts()
