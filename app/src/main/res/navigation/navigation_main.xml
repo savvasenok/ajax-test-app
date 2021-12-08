@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/contactsListFragment"
-        android:name="xyz.savvamirzoyan.share.ajaxtest.ContactsListFragment"
+        android:name="xyz.savvamirzoyan.share.ajaxtest.ui.contactslist.ContactsListFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_contacts_list"></fragment>
+        tools:layout="@layout/fragment_contacts_list" />
 </navigation>
