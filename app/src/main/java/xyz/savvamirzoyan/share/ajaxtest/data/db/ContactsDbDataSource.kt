@@ -9,7 +9,8 @@ import xyz.savvamirzoyan.share.ajaxtest.data.ContactData
 interface ContactsDbDataSource : Read<List<ContactDb>>, Save<List<ContactData>> {
 
     class Base(
-        private val roomProvider: RoomProvider
+        private val roomProvider: RoomProvider,
+        private val contactDataToDbMapper: ContactDataToDbMapper
     ) : ContactsDbDataSource {
         override suspend fun read(): List<ContactDb> = withContext(Dispatchers.IO) {
             roomProvider
@@ -19,7 +20,14 @@ interface ContactsDbDataSource : Read<List<ContactDb>>, Save<List<ContactData>> 
         }
 
         override suspend fun save(data: List<ContactData>) = withContext(Dispatchers.IO) {
-            TODO("Not yet implemented")
+            val contactsDb = data.map { contactData ->
+                contactData.mapToDb(contactDataToDbMapper)
+            }
+
+            roomProvider
+                .provide()
+                .contactsDb()
+                .saveContacts(contactsDb)
         }
     }
 }

@@ -14,7 +14,7 @@ interface ContactCloudToDataMapper : Abstract.Mapper {
             surname: String,
             email: String,
             photoUrl: String
-        ) = ContactData.Success(
+        ) = ContactData(
             0, name, surname, email, photoUrl
         )
     }

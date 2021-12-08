@@ -12,6 +12,7 @@ import xyz.savvamirzoyan.share.ajaxtest.data.ContactCloudToDataMapper
 import xyz.savvamirzoyan.share.ajaxtest.data.ContactDbToDataMapper
 import xyz.savvamirzoyan.share.ajaxtest.data.ContactsRepository
 import xyz.savvamirzoyan.share.ajaxtest.data.db.AppDatabase
+import xyz.savvamirzoyan.share.ajaxtest.data.db.ContactDataToDbMapper
 import xyz.savvamirzoyan.share.ajaxtest.data.db.ContactsDbDataSource
 import xyz.savvamirzoyan.share.ajaxtest.data.db.RoomProvider
 import xyz.savvamirzoyan.share.ajaxtest.data.net.ContactsCloudDataSource
@@ -67,9 +68,13 @@ class AjaxApplication : Application() {
         val contactsDataToDomainMapper = ContactsDataToDomainMapper.Base(contactDataToDomainMapper)
         val contactDomainToUiMapper = ContactDomainToUiMapper.Base(resourceProvider)
         val contactsCloudResponseToCloudMapper = ContactsCloudResponseToCloudMapper.Base()
+        val contactDataToDbMapper = ContactDataToDbMapper.Base()
 
         // Sources and Repositories
-        val contactsDbDataSource = ContactsDbDataSource.Base(RoomProvider.Base(this))
+        val contactsDbDataSource = ContactsDbDataSource.Base(
+            RoomProvider.Base(this),
+            contactDataToDbMapper
+        )
         val contactsCloudDataSource =
             ContactsCloudDataSource.Base(contactsService, contactsCloudResponseToCloudMapper)
         val contactsRepository = ContactsRepository.Base(

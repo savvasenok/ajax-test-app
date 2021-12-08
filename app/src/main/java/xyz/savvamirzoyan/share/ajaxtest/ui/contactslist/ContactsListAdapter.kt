@@ -61,7 +61,10 @@ class ContactsListAdapter : RecyclerView.Adapter<ContactsListAdapter.ContactView
                 contactUi.map(object : ContactUi.ContactUiMapper {
                     override fun map(id: Int, name: String, photoUrl: String) {
                         userFullName.text = name
-                        Glide.with(view).load(photoUrl).into(userPhoto)
+                        Glide.with(view)
+                            .load(photoUrl)
+                            .error(R.drawable.ic_round_person_48)
+                            .into(userPhoto)
                     }
 
                     // TODO: maybe empty mapper is not a good idea

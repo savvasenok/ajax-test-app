@@ -1,6 +1,8 @@
 package xyz.savvamirzoyan.share.ajaxtest.data.db
 
-interface ContactDataToDbMapper {
+import xyz.savvamirzoyan.share.ajaxtest.core.Abstract
+
+interface ContactDataToDbMapper : Abstract.Mapper {
 
     fun mapToDb(name: String, surname: String, email: String, photoUrl: String): ContactDb
 

@@ -13,15 +13,16 @@ interface ContactsRepository : Read<ContactsData> {
         private val contactCloudToDataMapper: ContactCloudToDataMapper
     ) : ContactsRepository {
         override suspend fun read(): ContactsData = try {
-            val cache = dbSource.read()
+            var cache = dbSource.read().map { it.map(contactDbToDataMapper) }
+
             if (cache.isEmpty()) {
                 val result = cloudSource.read().map { it.map(contactCloudToDataMapper) }
                 dbSource.save(result)
-                // TODO: we have to save and then read again to get objects with proper ids in db
-                ContactsData.Success(result)
-            } else {
-                ContactsData.Success(cache.map { it.map(contactDbToDataMapper) })
+                cache = dbSource.read().map { it.map(contactDbToDataMapper) }
             }
+
+            ContactsData.Success(cache)
+
         } catch (e: Exception) {
             ContactsData.Fail(e)
         }
