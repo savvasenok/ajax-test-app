@@ -5,6 +5,7 @@ import xyz.savvamirzoyan.share.ajaxtest.core.Abstract
 interface ContactDataToDomainMapper : Abstract.Mapper {
 
     fun map(id: Int, name: String, surname: String, email: String, photoUrl: String): ContactDomain
+    fun map(e: Exception): ContactDomain
 
     class Base : ContactDataToDomainMapper {
         override fun map(
@@ -13,6 +14,8 @@ interface ContactDataToDomainMapper : Abstract.Mapper {
             surname: String,
             email: String,
             photoUrl: String
-        ) = ContactDomain(id, name, surname, email, photoUrl)
+        ) = ContactDomain.Success(id, name, surname, email, photoUrl)
+
+        override fun map(e: Exception) = ContactDomain.Fail(e)
     }
 }

@@ -20,6 +20,7 @@ import xyz.savvamirzoyan.share.ajaxtest.data.net.ContactsService
 import xyz.savvamirzoyan.share.ajaxtest.domain.ContactDataToDomainMapper
 import xyz.savvamirzoyan.share.ajaxtest.domain.ContactsInteractor
 import xyz.savvamirzoyan.share.ajaxtest.ui.ContactDomainToUiMapper
+import xyz.savvamirzoyan.share.ajaxtest.ui.ResourceProvider
 import xyz.savvamirzoyan.share.ajaxtest.ui.contactslist.ContactsListViewModel
 
 class AjaxApplication : Application() {
@@ -55,11 +56,14 @@ class AjaxApplication : Application() {
             .build()
         val contactsService = retrofit.create(ContactsService::class.java)
 
+        // Resource Provider
+        val resourceProvider = ResourceProvider.Base(this)
+
         // Mappers
         val contactDbToDataMapper = ContactDbToDataMapper.Base()
         val contactCloudToDataMapper = ContactCloudToDataMapper.Base()
         val contactDataToDomainMapper = ContactDataToDomainMapper.Base()
-        val contactDomainToUiMapper = ContactDomainToUiMapper.Base()
+        val contactDomainToUiMapper = ContactDomainToUiMapper.Base(resourceProvider)
         val contactsCloudResponseToCloudMapper = ContactsCloudResponseToCloudMapper.Base()
 
         // Sources and Repositories

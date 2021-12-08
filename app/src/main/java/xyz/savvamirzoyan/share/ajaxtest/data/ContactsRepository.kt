@@ -12,14 +12,16 @@ interface ContactsRepository : Read<List<ContactData>> {
         private val contactDbToDataMapper: ContactDbToDataMapper,
         private val contactCloudToDataMapper: ContactCloudToDataMapper
     ) : ContactsRepository {
-        override suspend fun read(): List<ContactData> {
+        override suspend fun read(): List<ContactData> = try {
             val cache = dbSource.read().map { it.map(contactDbToDataMapper) }
             if (cache.isEmpty()) {
-                return cloudSource.read().map { it.map(contactCloudToDataMapper) }
+                cloudSource.read().map { it.map(contactCloudToDataMapper) }
                 // TODO: Save data from api
+            } else {
+                cache
             }
-
-            return cache
+        } catch (e: Exception) {
+            listOf(ContactData.Fail(e))
         }
     }
 }

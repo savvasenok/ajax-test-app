@@ -12,6 +12,6 @@ interface ContactDbToDataMapper : Abstract.Mapper {
             surname: String,
             email: String,
             photoUrl: String
-        ) = ContactData(id, name, surname, email, photoUrl)
+        ) = ContactData.Success(id, name, surname, email, photoUrl)
     }
 }

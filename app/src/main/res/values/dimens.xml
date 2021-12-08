@@ -6,4 +6,5 @@
     <dimen name="margin_s">8dp</dimen>
     <dimen name="padding_l">32dp</dimen>
     <dimen name="padding_recycler">256dp</dimen>
+    <dimen name="margin_recycler">@dimen/padding_recycler</dimen>
 </resources>
