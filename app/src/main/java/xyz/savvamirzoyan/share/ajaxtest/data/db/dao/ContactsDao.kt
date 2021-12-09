@@ -9,6 +9,9 @@ import xyz.savvamirzoyan.share.ajaxtest.data.db.ContactDb
 @Dao
 interface ContactsDao {
 
+    @Query("SELECT * FROM contacts WHERE id = :userId")
+    suspend fun fetchContact(userId: Int): ContactDb
+
     @Query("SELECT * FROM contacts")
     suspend fun fetchContacts(): List<ContactDb>
 

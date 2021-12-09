@@ -19,11 +19,14 @@ import xyz.savvamirzoyan.share.ajaxtest.data.net.ContactsCloudDataSource
 import xyz.savvamirzoyan.share.ajaxtest.data.net.ContactsCloudResponseToCloudMapper
 import xyz.savvamirzoyan.share.ajaxtest.data.net.ContactsService
 import xyz.savvamirzoyan.share.ajaxtest.domain.ContactDataToDomainMapper
+import xyz.savvamirzoyan.share.ajaxtest.domain.ContactDetailsInteractor
 import xyz.savvamirzoyan.share.ajaxtest.domain.ContactsDataToDomainMapper
 import xyz.savvamirzoyan.share.ajaxtest.domain.ContactsInteractor
 import xyz.savvamirzoyan.share.ajaxtest.ui.ContactDomainToUiMapper
 import xyz.savvamirzoyan.share.ajaxtest.ui.ResourceProvider
 import xyz.savvamirzoyan.share.ajaxtest.ui.contactslist.ContactsListViewModel
+import xyz.savvamirzoyan.share.ajaxtest.ui.userdetails.ContactDetailsViewModel
+import xyz.savvamirzoyan.share.ajaxtest.ui.userdetails.ContactDomainToDetailsUiMapper
 
 class AjaxApplication : Application() {
 
@@ -36,6 +39,7 @@ class AjaxApplication : Application() {
     }
 
     lateinit var contactsListViewModel: ContactsListViewModel
+    lateinit var contactDetailsViewModel: ContactDetailsViewModel
 
     @ExperimentalSerializationApi
     override fun onCreate() {
@@ -69,6 +73,7 @@ class AjaxApplication : Application() {
         val contactDomainToUiMapper = ContactDomainToUiMapper.Base(resourceProvider)
         val contactsCloudResponseToCloudMapper = ContactsCloudResponseToCloudMapper.Base()
         val contactDataToDbMapper = ContactDataToDbMapper.Base()
+        val contactDomainToDetailsUiMapper = ContactDomainToDetailsUiMapper.Base()
 
         // Sources and Repositories
         val contactsDbDataSource = ContactsDbDataSource.Base(
@@ -88,6 +93,10 @@ class AjaxApplication : Application() {
         contactsListViewModel = ContactsListViewModel(
             ContactsInteractor.Base(contactsRepository, contactsDataToDomainMapper),
             contactDomainToUiMapper
+        )
+        contactDetailsViewModel = ContactDetailsViewModel(
+            ContactDetailsInteractor.Base(contactsRepository, contactDataToDomainMapper),
+            contactDomainToDetailsUiMapper
         )
     }
 }

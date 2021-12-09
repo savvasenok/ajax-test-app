@@ -1,10 +1,12 @@
 package xyz.savvamirzoyan.share.ajaxtest.data
 
-import xyz.savvamirzoyan.share.ajaxtest.core.Read
 import xyz.savvamirzoyan.share.ajaxtest.data.db.ContactsDbDataSource
 import xyz.savvamirzoyan.share.ajaxtest.data.net.ContactsCloudDataSource
 
-interface ContactsRepository : Read<ContactsData> {
+interface ContactsRepository {
+
+    suspend fun read(): ContactsData
+    suspend fun read(userId: Int): ContactData
 
     class Base(
         private val cloudSource: ContactsCloudDataSource,
@@ -26,5 +28,8 @@ interface ContactsRepository : Read<ContactsData> {
         } catch (e: Exception) {
             ContactsData.Fail(e)
         }
+
+        override suspend fun read(userId: Int): ContactData =
+            dbSource.read(userId).map(contactDbToDataMapper)
     }
 }

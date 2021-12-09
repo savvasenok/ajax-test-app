@@ -7,7 +7,7 @@ import xyz.savvamirzoyan.share.ajaxtest.core.Abstract
 @Serializable
 data class ContactCloudResponse(
     private val results: List<ContactCloudUserResponse>
-) : Abstract.Object<List<ContactCloud>, ContactsCloudResponseToCloudMapper> {
+) : Abstract.CloudObject<List<ContactCloud>, ContactsCloudResponseToCloudMapper> {
     override fun map(mapper: ContactsCloudResponseToCloudMapper): List<ContactCloud> {
         return results.map { user ->
             mapper.map(user.name.first, user.name.last, user.email, user.picture.large)

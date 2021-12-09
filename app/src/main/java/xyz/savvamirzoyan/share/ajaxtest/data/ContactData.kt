@@ -12,15 +12,11 @@ data class ContactData(
     private val surname: String,
     private val email: String,
     private val photoUrl: String
-) : Abstract.Object<ContactDomain, ContactDataToDomainMapper>, ToContactDbMapper<ContactDb, ContactDataToDbMapper> {
+) : Abstract.DataObject {
 
-    override fun map(mapper: ContactDataToDomainMapper): ContactDomain =
+    fun map(mapper: ContactDataToDomainMapper): ContactDomain =
         mapper.map(id, name, surname, email, photoUrl)
 
-    override fun mapToDb(mapper: ContactDataToDbMapper): ContactDb =
+    fun map(mapper: ContactDataToDbMapper): ContactDb =
         mapper.mapToDb(name, surname, email, photoUrl)
-}
-
-interface ToContactDbMapper<T, M : Abstract.Mapper> {
-    fun mapToDb(mapper: M): T
 }

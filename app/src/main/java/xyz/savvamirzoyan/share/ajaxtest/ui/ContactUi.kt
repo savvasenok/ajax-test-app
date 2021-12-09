@@ -4,9 +4,9 @@ import xyz.savvamirzoyan.share.ajaxtest.R
 import xyz.savvamirzoyan.share.ajaxtest.core.Abstract
 import xyz.savvamirzoyan.share.ajaxtest.domain.ErrorType
 
-sealed class ContactUi : Abstract.Object<Unit, ContactUi.ContactUiMapper> {
+sealed class ContactUi : Abstract.UiObject {
 
-    override fun map(mapper: ContactUiMapper) {}
+    open fun map(mapper: ContactUiMapper) {}
 
     object Progress : ContactUi()
 

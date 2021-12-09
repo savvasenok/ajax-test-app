@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.collect
 import xyz.savvamirzoyan.share.ajaxtest.R
 import xyz.savvamirzoyan.share.ajaxtest.core.AjaxApplication
+import xyz.savvamirzoyan.share.ajaxtest.core.ClickListener
 import xyz.savvamirzoyan.share.ajaxtest.core.Retry
 
 class ContactsListFragment : Fragment() {
@@ -27,11 +29,18 @@ class ContactsListFragment : Fragment() {
         val viewModel = (requireActivity().application as AjaxApplication).contactsListViewModel
 
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerView_contactsList)
-        val adapter = ContactsListAdapter(object : Retry {
-            override fun tryAgain() {
-                viewModel.fetchContacts()
+        val adapter = ContactsListAdapter(
+            object : Retry {
+                override fun tryAgain() {
+                    viewModel.fetchContacts()
+                }
+            },
+            object : ClickListener<Int> {
+                override fun click(item: Int) {
+                    openDetails(item)
+                }
             }
-        })
+        )
         recycler.adapter = adapter
 
         viewModel.fetchContacts()
@@ -41,5 +50,10 @@ class ContactsListFragment : Fragment() {
                 adapter.update(it)
             }
         }
+    }
+
+    private fun openDetails(userId: Int) {
+        val action = ContactsListFragmentDirections.toUserDetailsFragment(userId)
+        Navigation.findNavController(requireView()).navigate(action)
     }
 }

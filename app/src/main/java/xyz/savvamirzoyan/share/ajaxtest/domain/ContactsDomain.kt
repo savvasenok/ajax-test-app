@@ -4,7 +4,9 @@ import xyz.savvamirzoyan.share.ajaxtest.core.Abstract
 import xyz.savvamirzoyan.share.ajaxtest.ui.ContactDomainToUiMapper
 import xyz.savvamirzoyan.share.ajaxtest.ui.ContactUi
 
-sealed class ContactsDomain : Abstract.Object<List<ContactUi>, ContactDomainToUiMapper> {
+sealed class ContactsDomain : Abstract.DomainObject {
+
+    abstract fun map(mapper: ContactDomainToUiMapper): List<ContactUi>
 
     data class Success(
         private val contacts: List<ContactDomain>

@@ -9,11 +9,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import xyz.savvamirzoyan.share.ajaxtest.R
+import xyz.savvamirzoyan.share.ajaxtest.core.ClickListener
 import xyz.savvamirzoyan.share.ajaxtest.core.Retry
 import xyz.savvamirzoyan.share.ajaxtest.ui.ContactUi
 
 class ContactsListAdapter(
-    private val retry: Retry
+    private val retry: Retry,
+    private val clickListener: ClickListener<Int>
 ) : RecyclerView.Adapter<ContactsListAdapter.ContactViewHolder>() {
 
     private companion object {
@@ -39,7 +41,7 @@ class ContactsListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
         return when (viewType) {
-            TYPE_BASE -> ContactViewHolder.Base(R.layout.layout_contacts_list_item.makeView(parent))
+            TYPE_BASE -> ContactViewHolder.Base(R.layout.layout_contacts_list_item.makeView(parent), clickListener)
             TYPE_PROGRESS -> ContactViewHolder.Progress(R.layout.layout_contacts_list_progress.makeView(parent))
             else -> ContactViewHolder.Fail(R.layout.layout_contacts_list_error.makeView(parent), retry)
         }
@@ -57,13 +59,17 @@ class ContactsListAdapter(
 
         class Progress(view: View) : ContactViewHolder(view)
 
-        class Base(private val view: View) : ContactViewHolder(view) {
+        class Base(
+            private val view: View,
+            private val clickListener: ClickListener<Int>
+        ) : ContactViewHolder(view) {
             private val userFullName = view.findViewById<TextView>(R.id.textView_userFullName)
             private val userPhoto = view.findViewById<ImageView>(R.id.imageView_userPicture)
 
             override fun bind(contactUi: ContactUi) {
                 contactUi.map(object : ContactUi.ContactUiMapper {
                     override fun map(id: Int, name: String, photoUrl: String) {
+                        view.setOnClickListener { clickListener.click(id) }
                         userFullName.text = name
                         Glide.with(view)
                             .load(photoUrl)

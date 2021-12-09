@@ -9,5 +9,18 @@
         android:id="@+id/contactsListFragment"
         android:name="xyz.savvamirzoyan.share.ajaxtest.ui.contactslist.ContactsListFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_contacts_list" />
+        tools:layout="@layout/fragment_contacts_list">
+        <action
+            android:id="@+id/toUserDetailsFragment"
+            app:destination="@id/userDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userDetailsFragment"
+        android:name="xyz.savvamirzoyan.share.ajaxtest.ui.userdetails.UserDetailsFragment"
+        android:label="@string/user_details"
+        tools:layout="@layout/fragment_user_details">
+        <argument
+            android:name="userId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

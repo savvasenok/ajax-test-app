@@ -13,7 +13,7 @@ data class ContactDb(
     val email: String,
     val photoUrl: String,
     @PrimaryKey(autoGenerate = true) val id: Int = 0
-) : Abstract.Object<ContactData, ContactDbToDataMapper> {
+) : Abstract.DbObject<ContactData, ContactDbToDataMapper> {
     override fun map(mapper: ContactDbToDataMapper): ContactData =
         mapper.map(id, name, surname, email, photoUrl)
 }

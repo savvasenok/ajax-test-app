@@ -15,7 +15,7 @@ data class ContactCloud(
     @SerialName("last") private val surname: String,
     @SerialName("email") private val email: String,
     @SerialName("large") private val photoUrl: String // TODO: Add thumbnail and proper photo
-) : Abstract.Object<ContactData, ContactCloudToDataMapper> {
+) : Abstract.CloudObject<ContactData, ContactCloudToDataMapper> {
     override fun map(mapper: ContactCloudToDataMapper): ContactData =
         mapper.map(name, surname, email, photoUrl)
 }
