@@ -13,10 +13,10 @@ sealed class ContactUi : Abstract.UiObject {
     data class Base(
         private val id: Int,
         private val fullName: String,
-        private val thumbnail: String
+        private val thumbnailUrl: String
     ) : ContactUi() {
         override fun map(mapper: ContactUiMapper) {
-            mapper.map(id, fullName, thumbnail)
+            mapper.map(id, fullName, thumbnailUrl)
         }
     }
 
