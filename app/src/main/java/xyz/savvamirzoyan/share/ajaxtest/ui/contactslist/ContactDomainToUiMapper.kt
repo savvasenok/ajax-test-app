@@ -1,7 +1,9 @@
-package xyz.savvamirzoyan.share.ajaxtest.ui
+package xyz.savvamirzoyan.share.ajaxtest.ui.contactslist
 
 import xyz.savvamirzoyan.share.ajaxtest.core.Abstract
 import xyz.savvamirzoyan.share.ajaxtest.domain.ErrorType
+import xyz.savvamirzoyan.share.ajaxtest.ui.ContactUi
+import xyz.savvamirzoyan.share.ajaxtest.ui.ResourceProvider
 
 interface ContactDomainToUiMapper : Abstract.Mapper {
 

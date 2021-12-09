@@ -2,8 +2,8 @@ package xyz.savvamirzoyan.share.ajaxtest.domain
 
 import xyz.savvamirzoyan.share.ajaxtest.core.Abstract
 import xyz.savvamirzoyan.share.ajaxtest.ui.ContactDetailsUi
-import xyz.savvamirzoyan.share.ajaxtest.ui.ContactDomainToUiMapper
 import xyz.savvamirzoyan.share.ajaxtest.ui.ContactUi
+import xyz.savvamirzoyan.share.ajaxtest.ui.contactslist.ContactDomainToUiMapper
 import xyz.savvamirzoyan.share.ajaxtest.ui.userdetails.ContactDomainToDetailsUiMapper
 
 data class ContactDomain(

@@ -17,4 +17,7 @@ interface ContactsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveContacts(contacts: List<ContactDb>)
+
+    @Query("DELETE FROM contacts WHERE id = :userId")
+    suspend fun delete(userId: Int)
 }

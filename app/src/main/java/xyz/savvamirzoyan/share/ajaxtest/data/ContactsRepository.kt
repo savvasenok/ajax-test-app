@@ -7,6 +7,7 @@ interface ContactsRepository {
 
     suspend fun read(): ContactsData
     suspend fun read(userId: Int): ContactData
+    suspend fun delete(userId: Int)
 
     class Base(
         private val cloudSource: ContactsCloudDataSource,
@@ -31,5 +32,9 @@ interface ContactsRepository {
 
         override suspend fun read(userId: Int): ContactData =
             dbSource.read(userId).map(contactDbToDataMapper)
+
+        override suspend fun delete(userId: Int) {
+            dbSource.delete(userId)
+        }
     }
 }

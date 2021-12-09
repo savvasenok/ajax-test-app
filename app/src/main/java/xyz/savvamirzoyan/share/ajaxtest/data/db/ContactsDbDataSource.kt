@@ -9,6 +9,7 @@ interface ContactsDbDataSource {
     suspend fun read(): List<ContactDb>
     suspend fun read(userId: Int): ContactDb
     suspend fun save(data: List<ContactData>)
+    suspend fun delete(userId: Int)
 
     class Base(
         private val roomProvider: RoomProvider,
@@ -37,6 +38,13 @@ interface ContactsDbDataSource {
                 .provide()
                 .contactsDb()
                 .saveContacts(contactsDb)
+        }
+
+        override suspend fun delete(userId: Int) = withContext(Dispatchers.IO) {
+            roomProvider
+                .provide()
+                .contactsDb()
+                .delete(userId)
         }
     }
 }

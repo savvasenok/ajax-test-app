@@ -4,20 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import xyz.savvamirzoyan.share.ajaxtest.R
 import xyz.savvamirzoyan.share.ajaxtest.core.AjaxApplication
 import xyz.savvamirzoyan.share.ajaxtest.ui.ContactDetailsUi
 
 class UserDetailsFragment : Fragment() {
 
-    val args by navArgs<UserDetailsFragmentArgs>()
+    private val args by navArgs<UserDetailsFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,34 +38,46 @@ class UserDetailsFragment : Fragment() {
         val textViewName = view.findViewById<EditText>(R.id.editText_firstName)
         val textViewSurname = view.findViewById<EditText>(R.id.editText_lastName)
         val textViewEmail = view.findViewById<EditText>(R.id.editText_email)
+        val deleteButton = view.findViewById<Button>(R.id.button_deleteContact)
+
+        deleteButton.setOnClickListener {
+            viewModel.deleteUser(args.userId)
+        }
 
         viewModel.fetchUser(args.userId)
 
         lifecycleScope.launchWhenStarted {
-            viewModel.contactDetailsUiFlow.collect {
-                it.map(object : ContactDetailsUi.ContactDetailsUiMapper {
-                    override fun map(
-                        name: String,
-                        surname: String,
-                        email: String,
-                        photoUrl: String,
-                        thumbnailUrl: String
-                    ) {
-                        textViewName.setText(name)
-                        textViewSurname.setText(surname)
-                        textViewEmail.setText(email)
+            launch {
+                viewModel.contactDetailsUiFlow.collect {
+                    it.map(object : ContactDetailsUi.ContactDetailsUiMapper {
+                        override fun map(
+                            name: String,
+                            surname: String,
+                            email: String,
+                            photoUrl: String,
+                            thumbnailUrl: String
+                        ) {
+                            textViewName.setText(name)
+                            textViewSurname.setText(surname)
+                            textViewEmail.setText(email)
 
-                        Glide.with(view)
-                            .load(photoUrl)
-                            .error(
-                                Glide.with(view)
-                                    .load(thumbnailUrl)
-                                    .placeholder(R.drawable.ic_round_person_48)
-                            )
-                            .placeholder(R.drawable.ic_round_person_48)
-                            .into(imageViewUserPhoto)
-                    }
-                })
+                            Glide.with(view)
+                                .load(photoUrl)
+                                .error(
+                                    Glide.with(view)
+                                        .load(thumbnailUrl)
+                                        .placeholder(R.drawable.ic_round_person_48)
+                                )
+                                .placeholder(R.drawable.ic_round_person_48)
+                                .into(imageViewUserPhoto)
+                        }
+                    })
+                }
+            }
+            launch {
+                viewModel.returnBackFlow.collect {
+                    Navigation.findNavController(view).popBackStack()
+                }
             }
         }
     }

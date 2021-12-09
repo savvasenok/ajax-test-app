@@ -22,8 +22,8 @@ import xyz.savvamirzoyan.share.ajaxtest.domain.ContactDataToDomainMapper
 import xyz.savvamirzoyan.share.ajaxtest.domain.ContactDetailsInteractor
 import xyz.savvamirzoyan.share.ajaxtest.domain.ContactsDataToDomainMapper
 import xyz.savvamirzoyan.share.ajaxtest.domain.ContactsInteractor
-import xyz.savvamirzoyan.share.ajaxtest.ui.ContactDomainToUiMapper
 import xyz.savvamirzoyan.share.ajaxtest.ui.ResourceProvider
+import xyz.savvamirzoyan.share.ajaxtest.ui.contactslist.ContactDomainToUiMapper
 import xyz.savvamirzoyan.share.ajaxtest.ui.contactslist.ContactsListViewModel
 import xyz.savvamirzoyan.share.ajaxtest.ui.userdetails.ContactDetailsViewModel
 import xyz.savvamirzoyan.share.ajaxtest.ui.userdetails.ContactDomainToDetailsUiMapper

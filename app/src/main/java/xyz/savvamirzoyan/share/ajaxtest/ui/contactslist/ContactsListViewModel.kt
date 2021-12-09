@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import xyz.savvamirzoyan.share.ajaxtest.domain.ContactsInteractor
-import xyz.savvamirzoyan.share.ajaxtest.ui.ContactDomainToUiMapper
 import xyz.savvamirzoyan.share.ajaxtest.ui.ContactUi
 
 class ContactsListViewModel(
