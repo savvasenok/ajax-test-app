@@ -11,8 +11,10 @@ data class ContactDomain(
     private val name: String,
     private val surname: String,
     private val email: String,
-    private val photoUrl: String
+    private val photoUrl: String,
+    private val thumbnailUrl: String
 ) : Abstract.DomainObject {
-    fun map(mapper: ContactDomainToUiMapper): ContactUi = mapper.map(id, name, surname, photoUrl)
-    fun map(mapper: ContactDomainToDetailsUiMapper): ContactDetailsUi = mapper.map(name, surname, email, photoUrl)
+    fun map(mapper: ContactDomainToUiMapper): ContactUi = mapper.map(id, name, surname, thumbnailUrl)
+    fun map(mapper: ContactDomainToDetailsUiMapper): ContactDetailsUi =
+        mapper.map(name, surname, email, photoUrl, thumbnailUrl)
 }

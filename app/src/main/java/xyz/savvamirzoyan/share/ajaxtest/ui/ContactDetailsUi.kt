@@ -12,14 +12,15 @@ sealed class ContactDetailsUi : Abstract.UiObject {
         private val name: String,
         private val surname: String,
         private val email: String,
-        private val photoUrl: String
+        private val photoUrl: String,
+        private val thumbnailUrl: String
     ) : ContactDetailsUi() {
         override fun map(mapper: ContactDetailsUiMapper) {
-            mapper.map(name, surname, email, photoUrl)
+            mapper.map(name, surname, email, photoUrl, thumbnailUrl)
         }
     }
 
     interface ContactDetailsUiMapper : Abstract.Mapper {
-        fun map(name: String, surname: String, email: String, photoUrl: String)
+        fun map(name: String, surname: String, email: String, photoUrl: String, thumbnailUrl: String)
     }
 }

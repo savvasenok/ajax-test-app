@@ -41,14 +41,25 @@ class UserDetailsFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             viewModel.contactDetailsUiFlow.collect {
                 it.map(object : ContactDetailsUi.ContactDetailsUiMapper {
-                    override fun map(name: String, surname: String, email: String, photoUrl: String) {
+                    override fun map(
+                        name: String,
+                        surname: String,
+                        email: String,
+                        photoUrl: String,
+                        thumbnailUrl: String
+                    ) {
                         textViewName.setText(name)
                         textViewSurname.setText(surname)
                         textViewEmail.setText(email)
+
                         Glide.with(view)
                             .load(photoUrl)
+                            .error(
+                                Glide.with(view)
+                                    .load(thumbnailUrl)
+                                    .placeholder(R.drawable.ic_round_person_48)
+                            )
                             .placeholder(R.drawable.ic_round_person_48)
-                            .error(R.drawable.ic_round_person_48)
                             .into(imageViewUserPhoto)
                     }
                 })

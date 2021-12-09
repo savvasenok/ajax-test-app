@@ -4,7 +4,7 @@ import xyz.savvamirzoyan.share.ajaxtest.core.Abstract
 
 interface ContactCloudToDataMapper : Abstract.Mapper {
 
-    fun map(name: String, surname: String, email: String, photoUrl: String): ContactData
+    fun map(name: String, surname: String, email: String, photoUrl: String, thumbnailUrl: String): ContactData
 
     // TODO: decide how to create unique id
     // probable provide some id to constructor from outside
@@ -13,9 +13,10 @@ interface ContactCloudToDataMapper : Abstract.Mapper {
             name: String,
             surname: String,
             email: String,
-            photoUrl: String
+            photoUrl: String,
+            thumbnailUrl: String
         ) = ContactData(
-            0, name, surname, email, photoUrl
+            0, name, surname, email, photoUrl, thumbnailUrl
         )
     }
 }

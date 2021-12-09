@@ -11,12 +11,13 @@ data class ContactData(
     private val name: String,
     private val surname: String,
     private val email: String,
-    private val photoUrl: String
+    private val photoUrl: String,
+    private val thumbnailUrl: String
 ) : Abstract.DataObject {
 
     fun map(mapper: ContactDataToDomainMapper): ContactDomain =
-        mapper.map(id, name, surname, email, photoUrl)
+        mapper.map(id, name, surname, email, photoUrl, thumbnailUrl)
 
     fun map(mapper: ContactDataToDbMapper): ContactDb =
-        mapper.mapToDb(name, surname, email, photoUrl)
+        mapper.map(name, surname, email, photoUrl, thumbnailUrl)
 }

@@ -4,10 +4,10 @@ import xyz.savvamirzoyan.share.ajaxtest.core.Abstract
 
 interface ContactDataToDbMapper : Abstract.Mapper {
 
-    fun mapToDb(name: String, surname: String, email: String, photoUrl: String): ContactDb
+    fun map(name: String, surname: String, email: String, photoUrl: String, thumbnailUrl: String): ContactDb
 
     class Base : ContactDataToDbMapper {
-        override fun mapToDb(name: String, surname: String, email: String, photoUrl: String) =
-            ContactDb(name, surname, email, photoUrl)
+        override fun map(name: String, surname: String, email: String, photoUrl: String, thumbnailUrl: String) =
+            ContactDb(name, surname, email, photoUrl, thumbnailUrl)
     }
 }

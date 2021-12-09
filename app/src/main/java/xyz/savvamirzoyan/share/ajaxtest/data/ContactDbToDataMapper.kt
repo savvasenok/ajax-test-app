@@ -3,7 +3,7 @@ package xyz.savvamirzoyan.share.ajaxtest.data
 import xyz.savvamirzoyan.share.ajaxtest.core.Abstract
 
 interface ContactDbToDataMapper : Abstract.Mapper {
-    fun map(id: Int, name: String, surname: String, email: String, photoUrl: String): ContactData
+    fun map(id: Int, name: String, surname: String, email: String, photoUrl: String, thumbnailUrl: String): ContactData
 
     class Base : ContactDbToDataMapper {
         override fun map(
@@ -11,7 +11,8 @@ interface ContactDbToDataMapper : Abstract.Mapper {
             name: String,
             surname: String,
             email: String,
-            photoUrl: String
-        ) = ContactData(id, name, surname, email, photoUrl)
+            photoUrl: String,
+            thumbnailUrl: String
+        ) = ContactData(id, name, surname, email, photoUrl, thumbnailUrl)
     }
 }
