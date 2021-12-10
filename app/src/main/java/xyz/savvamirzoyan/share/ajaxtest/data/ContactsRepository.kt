@@ -10,6 +10,7 @@ interface ContactsRepository {
     suspend fun read(): ContactsData
     suspend fun read(userId: Int): ContactData
     suspend fun delete(userId: Int)
+    suspend fun deleteAll()
     suspend fun update(value: ContactDomain)
 
     class Base(
@@ -39,6 +40,10 @@ interface ContactsRepository {
 
         override suspend fun delete(userId: Int) {
             dbSource.delete(userId)
+        }
+
+        override suspend fun deleteAll() {
+            dbSource.deleteAll()
         }
 
         override suspend fun update(value: ContactDomain) {

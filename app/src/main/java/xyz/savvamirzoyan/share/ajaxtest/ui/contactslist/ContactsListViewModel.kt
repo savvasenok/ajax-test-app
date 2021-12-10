@@ -26,4 +26,16 @@ class ContactsListViewModel(
             _contactsUiFlow.emit(result)
         }
     }
+
+    fun reloadContacts() {
+        viewModelScope.launch {
+            _contactsUiFlow.emit(listOf(ContactUi.Progress))
+            contactsInteractor.clearContacts()
+            val result = contactsInteractor
+                .fetchContacts()
+                .map(contactsDomainToUiMapper)
+
+            _contactsUiFlow.emit(result)
+        }
+    }
 }

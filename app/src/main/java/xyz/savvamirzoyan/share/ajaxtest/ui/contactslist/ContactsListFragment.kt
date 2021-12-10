@@ -1,9 +1,7 @@
 package xyz.savvamirzoyan.share.ajaxtest.ui.contactslist
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -16,17 +14,20 @@ import xyz.savvamirzoyan.share.ajaxtest.core.Retry
 
 class ContactsListFragment : Fragment() {
 
+    val viewModel by lazy {
+        (requireActivity().application as AjaxApplication).contactsListViewModel
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_contacts_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val viewModel = (requireActivity().application as AjaxApplication).contactsListViewModel
 
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerView_contactsList)
         val adapter = ContactsListAdapter(
@@ -50,6 +51,18 @@ class ContactsListFragment : Fragment() {
                 adapter.update(it)
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_contacts_list, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menuItem_reload -> true.also { viewModel.reloadContacts() }
+        }
+
+        return true
     }
 
     private fun openDetails(userId: Int) {
