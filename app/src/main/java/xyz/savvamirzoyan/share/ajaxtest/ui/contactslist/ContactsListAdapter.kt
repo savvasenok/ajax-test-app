@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import xyz.savvamirzoyan.share.ajaxtest.R
@@ -27,10 +28,11 @@ class ContactsListAdapter(
     private val contacts = ArrayList<ContactUi>()
 
     fun update(newContacts: List<ContactUi>) {
+        val callback = ContactsDiffCallback(contacts, newContacts)
+        val differentContacts = DiffUtil.calculateDiff(callback)
         contacts.clear()
         contacts.addAll(newContacts)
-        notifyDataSetChanged()
-        // TODO: Add diffutils
+        differentContacts.dispatchUpdatesTo(this)
     }
 
     override fun getItemViewType(position: Int): Int = when (contacts[position]) {
@@ -98,6 +100,26 @@ class ContactsListAdapter(
 
                 retryButton.setOnClickListener { retry.tryAgain() }
             }
+        }
+    }
+
+    private class ContactsDiffCallback(
+        private val oldList: List<ContactUi>,
+        private val newList: List<ContactUi>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int = oldList.size
+
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val old = oldList[oldItemPosition]
+            val new = newList[newItemPosition]
+
+            return (old == new) && (old == new)
         }
     }
 }
