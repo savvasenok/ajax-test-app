@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.collect
 import xyz.savvamirzoyan.share.ajaxtest.R
@@ -17,6 +18,28 @@ class ContactsListFragment : Fragment() {
     val viewModel by lazy {
         (requireActivity().application as AjaxApplication).contactsListViewModel
     }
+
+    val swipeCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT + ItemTouchHelper.LEFT) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ) = false
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+        }
+
+        override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+            if (viewHolder !is ContactsListAdapter.ContactViewHolder.Base) {
+                return 0
+            }
+
+            return super.getSwipeDirs(recyclerView, viewHolder)
+        }
+    }
+
+    val swipeHelper = ItemTouchHelper(swipeCallback)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +67,8 @@ class ContactsListFragment : Fragment() {
         )
         recycler.adapter = adapter
 
+        swipeHelper.attachToRecyclerView(recycler)
+
         viewModel.fetchContacts()
 
         lifecycleScope.launchWhenStarted {
@@ -70,3 +95,5 @@ class ContactsListFragment : Fragment() {
         Navigation.findNavController(requireView()).navigate(action)
     }
 }
+
+private fun Boolean.toInt() = if (this) 1 else 0
