@@ -1,9 +1,6 @@
 package xyz.savvamirzoyan.share.ajaxtest.data.db.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import xyz.savvamirzoyan.share.ajaxtest.data.db.ContactDb
 
 @Dao
@@ -20,4 +17,7 @@ interface ContactsDao {
 
     @Query("DELETE FROM contacts WHERE id = :userId")
     suspend fun delete(userId: Int)
+
+    @Update
+    suspend fun update(value: ContactDb)
 }

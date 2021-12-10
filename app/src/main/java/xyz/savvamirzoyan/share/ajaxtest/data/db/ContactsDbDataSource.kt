@@ -10,6 +10,7 @@ interface ContactsDbDataSource {
     suspend fun read(userId: Int): ContactDb
     suspend fun save(data: List<ContactData>)
     suspend fun delete(userId: Int)
+    suspend fun update(value: ContactData)
 
     class Base(
         private val roomProvider: RoomProvider,
@@ -45,6 +46,15 @@ interface ContactsDbDataSource {
                 .provide()
                 .contactsDb()
                 .delete(userId)
+        }
+
+        override suspend fun update(value: ContactData) = withContext(Dispatchers.IO) {
+            val contactDb = value.map(contactDataToDbMapper)
+
+            roomProvider
+                .provide()
+                .contactsDb()
+                .update(contactDb)
         }
     }
 }

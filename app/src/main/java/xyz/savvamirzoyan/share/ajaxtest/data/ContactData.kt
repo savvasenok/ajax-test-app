@@ -19,5 +19,5 @@ data class ContactData(
         mapper.map(id, name, surname, email, photoUrl, thumbnailUrl)
 
     fun map(mapper: ContactDataToDbMapper): ContactDb =
-        mapper.map(name, surname, email, photoUrl, thumbnailUrl)
+        mapper.map(id, name, surname, email, photoUrl, thumbnailUrl)
 }

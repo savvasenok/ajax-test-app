@@ -18,10 +18,7 @@ import xyz.savvamirzoyan.share.ajaxtest.data.db.RoomProvider
 import xyz.savvamirzoyan.share.ajaxtest.data.net.ContactsCloudDataSource
 import xyz.savvamirzoyan.share.ajaxtest.data.net.ContactsCloudResponseToCloudMapper
 import xyz.savvamirzoyan.share.ajaxtest.data.net.ContactsService
-import xyz.savvamirzoyan.share.ajaxtest.domain.ContactDataToDomainMapper
-import xyz.savvamirzoyan.share.ajaxtest.domain.ContactDetailsInteractor
-import xyz.savvamirzoyan.share.ajaxtest.domain.ContactsDataToDomainMapper
-import xyz.savvamirzoyan.share.ajaxtest.domain.ContactsInteractor
+import xyz.savvamirzoyan.share.ajaxtest.domain.*
 import xyz.savvamirzoyan.share.ajaxtest.ui.ResourceProvider
 import xyz.savvamirzoyan.share.ajaxtest.ui.contactslist.ContactDomainToUiMapper
 import xyz.savvamirzoyan.share.ajaxtest.ui.contactslist.ContactsListViewModel
@@ -74,6 +71,7 @@ class AjaxApplication : Application() {
         val contactsCloudResponseToCloudMapper = ContactsCloudResponseToCloudMapper.Base()
         val contactDataToDbMapper = ContactDataToDbMapper.Base()
         val contactDomainToDetailsUiMapper = ContactDomainToDetailsUiMapper.Base()
+        val contactDomainToDataMapper = ContactDomainToDataMapper.Base()
 
         // Sources and Repositories
         val contactsDbDataSource = ContactsDbDataSource.Base(
@@ -86,7 +84,8 @@ class AjaxApplication : Application() {
             contactsCloudDataSource,
             contactsDbDataSource,
             contactDbToDataMapper,
-            contactCloudToDataMapper
+            contactCloudToDataMapper,
+            contactDomainToDataMapper
         )
 
         // ViewModels
@@ -96,7 +95,8 @@ class AjaxApplication : Application() {
         )
         contactDetailsViewModel = ContactDetailsViewModel(
             ContactDetailsInteractor.Base(contactsRepository, contactDataToDomainMapper),
-            contactDomainToDetailsUiMapper
+            contactDomainToDetailsUiMapper,
+            resourceProvider
         )
     }
 }

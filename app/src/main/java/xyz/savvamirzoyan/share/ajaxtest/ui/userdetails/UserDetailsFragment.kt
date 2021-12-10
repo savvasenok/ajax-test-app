@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import xyz.savvamirzoyan.share.ajaxtest.R
 import xyz.savvamirzoyan.share.ajaxtest.core.AjaxApplication
+import xyz.savvamirzoyan.share.ajaxtest.core.TextWatcherWrapper
 import xyz.savvamirzoyan.share.ajaxtest.ui.ContactDetailsUi
 
 class UserDetailsFragment : Fragment() {
@@ -39,10 +40,33 @@ class UserDetailsFragment : Fragment() {
         val textViewSurname = view.findViewById<EditText>(R.id.editText_lastName)
         val textViewEmail = view.findViewById<EditText>(R.id.editText_email)
         val deleteButton = view.findViewById<Button>(R.id.button_deleteContact)
+        val saveButton = view.findViewById<Button>(R.id.button_saveContact)
 
         deleteButton.setOnClickListener {
             viewModel.deleteUser(args.userId)
         }
+
+        saveButton.setOnClickListener {
+            viewModel.saveChanges(args.userId)
+        }
+
+        textViewName.addTextChangedListener(object : TextWatcherWrapper {
+            override fun onTextChanged(text: String) {
+                viewModel.updateName(text)
+            }
+        })
+
+        textViewSurname.addTextChangedListener(object : TextWatcherWrapper {
+            override fun onTextChanged(text: String) {
+                viewModel.updateSurname(text)
+            }
+        })
+
+        textViewEmail.addTextChangedListener(object : TextWatcherWrapper {
+            override fun onTextChanged(text: String) {
+                viewModel.updateEmail(text)
+            }
+        })
 
         viewModel.fetchUser(args.userId)
 
@@ -77,6 +101,26 @@ class UserDetailsFragment : Fragment() {
             launch {
                 viewModel.returnBackFlow.collect {
                     Navigation.findNavController(view).popBackStack()
+                }
+            }
+            launch {
+                viewModel.nameErrorFlow.collect {
+                    textViewName.error = it
+                }
+            }
+            launch {
+                viewModel.surnameErrorFlow.collect {
+                    textViewSurname.error = it
+                }
+            }
+            launch {
+                viewModel.emailErrorFlow.collect {
+                    textViewEmail.error = it
+                }
+            }
+            launch {
+                viewModel.saveButtonIsEnableFlow.collect {
+                    saveButton.isEnabled = it
                 }
             }
         }
