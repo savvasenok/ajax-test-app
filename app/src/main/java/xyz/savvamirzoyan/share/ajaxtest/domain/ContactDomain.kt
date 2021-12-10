@@ -17,7 +17,7 @@ data class ContactDomain(
     private val email: String,
     private val photoUrl: String,
     private val thumbnailUrl: String
-) : Abstract.DomainObject, ContactDomainMatch {
+) : Abstract.DomainObject, ContactDomainMatcher {
     fun map(mapper: ContactDomainToUiMapper): ContactUi = mapper.map(id, name, surname, thumbnailUrl)
     fun map(mapper: ContactDomainToDetailsUiMapper): ContactDetailsUi =
         mapper.map(name, surname, email, photoUrl, thumbnailUrl)
@@ -38,7 +38,7 @@ data class ContactDomain(
 
 }
 
-interface ContactDomainMatch : Matcher {
+interface ContactDomainMatcher : Matcher {
     fun matchName(text: String): Boolean
     fun matchSurname(text: String): Boolean
     fun matchEmail(text: String): Boolean

@@ -119,7 +119,7 @@ class ContactsListAdapter(
             val old = oldList[oldItemPosition]
             val new = newList[newItemPosition]
 
-            return (old == new) && (old == new)
+            return old == new
         }
     }
 }

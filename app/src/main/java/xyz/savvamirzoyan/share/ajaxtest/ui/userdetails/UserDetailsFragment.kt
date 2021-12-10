@@ -23,6 +23,8 @@ class UserDetailsFragment : Fragment() {
 
     private val args by navArgs<UserDetailsFragmentArgs>()
 
+    val viewModel by lazy { (requireActivity().application as AjaxApplication).contactDetailsViewModel }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,9 +34,6 @@ class UserDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // TODO: make viewmodel lazy init-ed
-        val viewModel = (requireActivity().application as AjaxApplication).contactDetailsViewModel
 
         val imageViewUserPhoto = view.findViewById<ImageView>(R.id.imageView_userPicture)
         val textViewName = view.findViewById<EditText>(R.id.editText_firstName)

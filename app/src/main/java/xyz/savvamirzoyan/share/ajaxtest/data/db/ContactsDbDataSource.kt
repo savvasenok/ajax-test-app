@@ -18,59 +18,40 @@ interface ContactsDbDataSource {
         private val roomProvider: RoomProvider,
         private val contactDataToDbMapper: ContactDataToDbMapper
     ) : ContactsDbDataSource {
+
+        private val contactsDb = roomProvider.provide().contactsDb()
+
         override suspend fun read(): List<ContactDb> = withContext(Dispatchers.IO) {
-            roomProvider
-                .provide()
-                .contactsDb()
-                .fetchContacts()
+            contactsDb.fetchContacts()
         }
 
         override suspend fun read(userId: Int): ContactDb = withContext(Dispatchers.IO) {
-            roomProvider
-                .provide()
-                .contactsDb()
-                .fetchContact(userId)
+            contactsDb.fetchContact(userId)
         }
 
         override suspend fun save(data: List<ContactData>) = withContext(Dispatchers.IO) {
-            val contactsDb = data.map { contactData ->
+            val contactsDbObjects = data.map { contactData ->
                 contactData.map(contactDataToDbMapper)
             }
 
-            roomProvider
-                .provide()
-                .contactsDb()
-                .saveContacts(contactsDb)
+            contactsDb.saveContacts(contactsDbObjects)
         }
 
         override suspend fun delete(userId: Int) = withContext(Dispatchers.IO) {
-            roomProvider
-                .provide()
-                .contactsDb()
-                .delete(userId)
+            contactsDb.delete(userId)
         }
 
         override suspend fun delete(contact: ContactData) {
-            roomProvider
-                .provide()
-                .contactsDb()
-                .delete(contact.map(contactDataToDbMapper))
+            contactsDb.delete(contact.map(contactDataToDbMapper))
         }
 
         override suspend fun deleteAll() = withContext(Dispatchers.IO) {
-            roomProvider
-                .provide()
-                .contactsDb()
-                .deleteAll()
+            contactsDb.deleteAll()
         }
 
         override suspend fun update(value: ContactData) = withContext(Dispatchers.IO) {
             val contactDb = value.map(contactDataToDbMapper)
-
-            roomProvider
-                .provide()
-                .contactsDb()
-                .update(contactDb)
+            contactsDb.update(contactDb)
         }
     }
 }

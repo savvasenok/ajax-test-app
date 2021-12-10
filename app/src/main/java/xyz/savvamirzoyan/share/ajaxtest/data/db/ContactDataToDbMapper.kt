@@ -14,7 +14,6 @@ interface ContactDataToDbMapper : Abstract.Mapper {
             email: String,
             photoUrl: String,
             thumbnailUrl: String
-        ) =
-            ContactDb(name, surname, email, photoUrl, thumbnailUrl, id)
+        ) = ContactDb(name, surname, email, photoUrl, thumbnailUrl, id)
     }
 }

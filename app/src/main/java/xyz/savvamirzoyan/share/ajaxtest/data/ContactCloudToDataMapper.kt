@@ -6,8 +6,6 @@ interface ContactCloudToDataMapper : Abstract.Mapper {
 
     fun map(name: String, surname: String, email: String, photoUrl: String, thumbnailUrl: String): ContactData
 
-    // TODO: decide how to create unique id
-    // probable provide some id to constructor from outside
     class Base : ContactCloudToDataMapper {
         override fun map(
             name: String,
