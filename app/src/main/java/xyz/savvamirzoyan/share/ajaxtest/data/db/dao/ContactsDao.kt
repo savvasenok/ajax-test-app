@@ -6,8 +6,8 @@ import xyz.savvamirzoyan.share.ajaxtest.data.db.ContactDb
 @Dao
 interface ContactsDao {
 
-    @Query("SELECT * FROM contacts WHERE id = :userId")
-    suspend fun fetchContact(userId: Int): ContactDb
+    @Query("SELECT * FROM contacts WHERE id = :contactId")
+    suspend fun fetchContact(contactId: Int): ContactDb
 
     @Query("SELECT * FROM contacts")
     suspend fun fetchContacts(): List<ContactDb>
@@ -15,8 +15,11 @@ interface ContactsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveContacts(contacts: List<ContactDb>)
 
-    @Query("DELETE FROM contacts WHERE id = :userId")
-    suspend fun delete(userId: Int)
+    @Query("DELETE FROM contacts WHERE id = :contactId")
+    suspend fun delete(contactId: Int)
+
+    @Delete
+    suspend fun delete(contact: ContactDb)
 
     @Query("DELETE FROM contacts")
     suspend fun deleteAll()

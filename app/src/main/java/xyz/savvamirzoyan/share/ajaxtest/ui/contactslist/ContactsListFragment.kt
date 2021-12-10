@@ -15,20 +15,35 @@ import xyz.savvamirzoyan.share.ajaxtest.core.Retry
 
 class ContactsListFragment : Fragment() {
 
-    val viewModel by lazy {
+    private val viewModel by lazy {
         (requireActivity().application as AjaxApplication).contactsListViewModel
     }
 
-    val swipeCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT + ItemTouchHelper.LEFT) {
-        override fun onMove(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            target: RecyclerView.ViewHolder
-        ) = false
-
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
+    private val adapter = ContactsListAdapter(
+        object : Retry {
+            override fun tryAgain() {
+                viewModel.fetchContacts()
+            }
+        },
+        object : ClickListener<Int> {
+            override fun click(item: Int) {
+                openDetails(item)
+            }
         }
+    )
+
+    private val swipeCallback =
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT + ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ) = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                viewModel.deleteUserByPosition(viewHolder.adapterPosition)
+
+            }
 
         override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
             if (viewHolder !is ContactsListAdapter.ContactViewHolder.Base) {
@@ -39,7 +54,7 @@ class ContactsListFragment : Fragment() {
         }
     }
 
-    val swipeHelper = ItemTouchHelper(swipeCallback)
+    private val swipeHelper = ItemTouchHelper(swipeCallback)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,18 +68,6 @@ class ContactsListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerView_contactsList)
-        val adapter = ContactsListAdapter(
-            object : Retry {
-                override fun tryAgain() {
-                    viewModel.fetchContacts()
-                }
-            },
-            object : ClickListener<Int> {
-                override fun click(item: Int) {
-                    openDetails(item)
-                }
-            }
-        )
         recycler.adapter = adapter
 
         swipeHelper.attachToRecyclerView(recycler)

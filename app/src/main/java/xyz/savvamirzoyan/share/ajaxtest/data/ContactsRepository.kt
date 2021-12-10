@@ -8,8 +8,9 @@ import xyz.savvamirzoyan.share.ajaxtest.domain.ContactDomainToDataMapper
 interface ContactsRepository {
 
     suspend fun read(): ContactsData
-    suspend fun read(userId: Int): ContactData
-    suspend fun delete(userId: Int)
+    suspend fun read(contactId: Int): ContactData
+    suspend fun delete(contactId: Int)
+    suspend fun delete(contact: ContactDomain)
     suspend fun deleteAll()
     suspend fun update(value: ContactDomain)
 
@@ -35,11 +36,15 @@ interface ContactsRepository {
             ContactsData.Fail(e)
         }
 
-        override suspend fun read(userId: Int): ContactData =
-            dbSource.read(userId).map(contactDbToDataMapper)
+        override suspend fun read(contactId: Int): ContactData =
+            dbSource.read(contactId).map(contactDbToDataMapper)
 
-        override suspend fun delete(userId: Int) {
-            dbSource.delete(userId)
+        override suspend fun delete(contactId: Int) {
+            dbSource.delete(contactId)
+        }
+
+        override suspend fun delete(contact: ContactDomain) {
+            dbSource.delete(contact.map(contactDomainToDataMapper))
         }
 
         override suspend fun deleteAll() {

@@ -10,6 +10,7 @@ interface ContactsDbDataSource {
     suspend fun read(userId: Int): ContactDb
     suspend fun save(data: List<ContactData>)
     suspend fun delete(userId: Int)
+    suspend fun delete(contact: ContactData)
     suspend fun deleteAll()
     suspend fun update(value: ContactData)
 
@@ -47,6 +48,13 @@ interface ContactsDbDataSource {
                 .provide()
                 .contactsDb()
                 .delete(userId)
+        }
+
+        override suspend fun delete(contact: ContactData) {
+            roomProvider
+                .provide()
+                .contactsDb()
+                .delete(contact.map(contactDataToDbMapper))
         }
 
         override suspend fun deleteAll() = withContext(Dispatchers.IO) {

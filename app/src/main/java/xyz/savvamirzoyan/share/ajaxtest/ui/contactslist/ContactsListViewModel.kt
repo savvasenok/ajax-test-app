@@ -19,11 +19,7 @@ class ContactsListViewModel(
     fun fetchContacts() {
         viewModelScope.launch {
             _contactsUiFlow.emit(listOf(ContactUi.Progress))
-            val result = contactsInteractor
-                .fetchContacts()
-                .map(contactsDomainToUiMapper)
-
-            _contactsUiFlow.emit(result)
+            emitContacts()
         }
     }
 
@@ -31,11 +27,22 @@ class ContactsListViewModel(
         viewModelScope.launch {
             _contactsUiFlow.emit(listOf(ContactUi.Progress))
             contactsInteractor.clearContacts()
-            val result = contactsInteractor
-                .fetchContacts()
-                .map(contactsDomainToUiMapper)
-
-            _contactsUiFlow.emit(result)
+            emitContacts()
         }
+    }
+
+    fun deleteUserByPosition(position: Int) {
+        viewModelScope.launch {
+            contactsInteractor.deleteUserByPosition(position)
+            emitContacts()
+        }
+    }
+
+    private suspend fun emitContacts() {
+        val result = contactsInteractor
+            .fetchContacts()
+            .map(contactsDomainToUiMapper)
+
+        _contactsUiFlow.emit(result)
     }
 }
